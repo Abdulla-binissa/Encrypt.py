@@ -9,43 +9,16 @@ import base64
 # creating root
 root = Tk()
 
+
 # setting title and size
-root.title("Enrcypt.py")
-root.geometry("1200x6000")
+root.title("Encrypt.py")
+root.geometry("600x300")
 
-Tops = Frame(root, width = 1600, relief = SUNKEN)
-Tops.pack(side = TOP)
+f1 = Frame(root, width = 300, height = 600, relief = SUNKEN)
+f1.pack(fill = BOTH)
 
-f1 = Frame(root, width = 800, height = 700, relief = SUNKEN)
-f1.pack(side = LEFT)
-
-##################
-###### Time ######
-
-localtime = time.asctime(time.localtime(time.time()))
-
-lblInfo = Label(
-        Tops, 
-        font = ('helvetica', 50, 'bold'), 
-        text = "SECRET MESSAGING /n Vigenere cipher",
-        fg = "Black",
-        bd = 10,
-        anchor = 'w')
-lblInfo.grid(row = 0, column = 0)
-
-lblInfo = Label(
-        Tops,
-        font = ('arial' , 20, 'bold'),
-        text = localtime, 
-        fg = "Steel Blue",
-        bd = 10,
-        anchor = 'w')
-lblInfo.grid(row = 1, column = 0)
-
-rand = StringVar()
-Msg = StringVar()
+OriginalMsg = StringVar()
 key = StringVar()
-mode = StringVar()
 Result = StringVar()
 
 # exit function
@@ -54,101 +27,9 @@ def qExit():
 
 # reset window
 def Reset():
-    rand.set("")
-    Msg.set("")
+    OriginalMsg.set("")
     key.set("")
-    mode.set("")
     Result.set("")
-
-# reference
-lblReference = Label(
-        f1, 
-        font = ('arial', 16, 'bold'),
-        text = "Name: ",
-        bd = 16,
-        anchor = 'w')
-lblReference.grid(row = 0, column = 0)
-
-txtReference = Entry(
-        f1,
-        font = ('arial', 16, 'bold'),
-        textvariable = rand, bd = 10,
-        insertwidth = 4,
-        bg = "powder blue", justify = 'right')
-txtReference.grid(row = 0, column = 1)
-
-####################
-###### Labels ######
-
-lblMsg = Label(
-        f1,
-        font = ('arial', 16, 'bold'),
-        text = "MESSAGE",
-        bd = 16, anchor = 'w')
-lblMsg.grid(row = 1, column = 1)
-
-txtMsg = Entry(
-        f1,
-        font = ('arial', 16, 'bold'),
-        textvariable = Msg, 
-        bd = 10,
-        insertwidth = 4,
-        bg = "powder blue",
-        justify = 'right')
-txtMsg.grid(row = 1, column = 1)
-
-lblkey = Label(
-        f1,
-        font = ('arial', 16, 'bold'),
-        text = "KEY",
-        bd = 16,
-        anchor = 'w')
-lblkey.grid(row = 2, column = 0)
-
-txtkey = Entry(
-        f1,
-        font = ('arial', 16, 'bold'),
-        textvariable = key,
-        bd = 10,
-        insertwidth = 4,
-        bg = "powder blue", justify = 'right')
-txtkey.grid(row = 2, column = 1)
-
-lblmode = Label(
-        f1,
-        font = ('arial', 16, 'bold'),
-        text = "MODE(e for encrype, d for decrypt)",
-        bd = 16,
-        anchor = 'w')
-lblmode.grid(row = 3, column = 0)
-
-txtmode = Entry(
-        f1,
-        font = ('arial', 16, 'bold'),
-        textvariable = mode,
-        bd = 10,
-        insertwidth = 4,
-        bg = "powder blue",
-        justify = 'right')
-txtmode.grid(row = 3, column = 1)
-
-lblService = Label(
-        f1,
-        font = ('arial', 16, 'bold'),
-        text = "The Result-",
-        bd = 16,
-        anchor = 'w')
-lblService.grid(row = 2, column = 3)
-
-txtService = Entry(
-        f1,
-        font = ('arial', 16, 'bold'),
-        textvariable = Result,
-        bd = 10,
-        insertwidth = 4,
-        bg = "powder blue",
-        justify = 'right')
-txtService.grid(row = 2, column = 3)
 
 #############################
 ###### Vigenère cipher ######
@@ -165,73 +46,140 @@ def encode(key, clear):
 
 # Decode
 def decode(key, enc):
-    dec = []
+	dec = []
 
-    enc = base64.urlsafe_b64decode(enc).decode()
-    for i in range(len(enc)):
-        key_c = key[i % len(key)]
-        dec_c = chr((256 + ord(enc[i]) - ord(key_c)) % 256)
-        dec.append(dec_c)
-    return "".join(dec)
+	enc = base64.urlsafe_b64decode(enc).decode()
+	for i in range(len(enc)):
+		key_c = key[i % len(key)]
+		dec_c = chr((256 + ord(enc[i]) - ord(key_c)) % 256)
+		dec.append(dec_c)
+	return "".join(dec)
 
-# Ref
-def Ref():
-    print("Message= ", (Msg.get()))
+# Button Refs
+def EncRef():
+	print("Message= ", (txtMsg.get("1.0",END)))
 
-    clear = Msg.get()
-    k= key.get()
-    m = mode.get()
+	clear = txtMsg.get("1.0",END)
+	k = key.get()
+	txtService.delete(1.0, END)
+	txtService.insert(1.0, encode(k, clear))
 
-    if (m == 'e'):
-        Result.set(encode(k, clear))
-    else:
-        Result.set(decode(k, clear))
+def DecRef():
+	print("Message= ", (txtMsg.get("1.0",END)))
 
-#####################
-###### Buttons ######
+	clear = txtMsg.get("1.0",END)
+	k = key.get()
+	txtService.delete(1.0, END)
+	txtService.insert(1.0, decode(k, clear))
 
-# Show Message button
-btnTotal = Button(
+######################################################
+#################### Labels ##########################
+
+# Key: 
+lblkey = Label(
         f1,
-        padx = 16,
-        pady = 8,
-        bd = 16,
-        fg = "black",
         font = ('arial', 16, 'bold'),
-        width = 10,
-        text = "Show Message",
+        text = " Key:",
+        anchor = 'w')
+lblkey.place(
+        width = 80,
+        height = 50,
+        x = 0, 
+        y = 5)
+
+# Key Entry Box
+txtkey = Entry(
+        f1,
+        font = ('arial', 16, 'bold'),
+        textvariable = key,
+        insertwidth = 4,
         bg = "powder blue",
-        command = Ref)
-btnTotal.grid(row = 7, column = 1)
+        justify = 'right')
+txtkey.place(
+        width = 210,
+        height = 40, 
+        x = 80, 
+        y = 10)
 
-# Show Reset button
-btnReset = Button(
+# Encode Button
+btnEnc = Button(
         f1,
-        padx = 16, 
-        pady = 8,
-        bd = 16,
-        fg = "black", 
-        font = ('arial', 16, 'bold'),
-        width = 10,
-        text = "Reset",
-        bg = "green",
-        command = Reset)
-btnReset.grid(row = 7, column = 2)
-
-btnExit = Button(
-        f1,
-        padx = 16,
-        pady = 8,
-        bd = 16,
         fg = "black",
         font = ('arial', 16, 'bold'),
-        width = 10,
-        text = "Exit",
-        bg = "red",
-        command = qExit)
-btnExit.grid(row = 7, column = 3)
+        width = 6,
+        text = "Encrypt",
+        bg = "green",
+        command = EncRef)
+btnEnc.place(
+        width = 120, 
+        height = 50, 
+        x = 310, 
+        y = 5)
 
-# Run
+# Deccode Button
+btnDec = Button(
+        f1,
+        fg = "black",
+        font = ('arial', 16, 'bold'),
+        width = 6,
+        text = "Decrypt",
+        bg = "green",
+        command = DecRef)
+btnDec.place(
+        width = 120, 
+        height = 50, 
+        x = 435, 
+        y = 5)
+
+# Message: 
+lblMsg = Label(
+        f1,
+        padx = 10,
+        font = ('arial', 16, 'bold'),
+        text = "Message",
+        anchor = 'w')
+lblMsg.place(
+        width = 300,
+        height = 40, 
+        x = 0, 
+        y = 60)
+
+# Result: 
+lblMsg = Label(
+        f1,
+        padx = 10,
+        font = ('arial', 16, 'bold'),
+        text = "Result",
+        anchor = 'w')
+lblMsg.place(
+        width = 300,
+        height = 40, 
+        x = 300, 
+        y = 60)
+
+# Message Box
+txtMsg = Text(
+        f1,
+        font = ('arial', 16, 'bold'),
+        bg = "powder blue")
+txtMsg.place(
+        width = 280,
+        height = 190, 
+        x = 10, 
+        y = 100)
+
+# Result Box
+txtService = Text(
+        f1,
+        font = ('arial', 16, 'bold'),
+        bg = "powder blue")
+txtService.place(
+        width = 280,
+        height = 190, 
+        x = 310, 
+        y = 100)
+
+###### Run
 root.mainloop()
 
     
