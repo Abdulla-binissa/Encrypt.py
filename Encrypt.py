@@ -93,7 +93,6 @@ txtkey = Entry(
         font = ('arial', 16, 'bold'),
         textvariable = key,
         insertwidth = 4,
-        bg = "powder blue",
         justify = 'right')
 txtkey.place(
         width = 210,
@@ -108,7 +107,6 @@ btnEnc = Button(
         font = ('arial', 16, 'bold'),
         width = 6,
         text = "Encrypt",
-        bg = "green",
         command = EncRef)
 btnEnc.place(
         width = 120, 
@@ -123,7 +121,6 @@ btnDec = Button(
         font = ('arial', 16, 'bold'),
         width = 6,
         text = "Decrypt",
-        bg = "green",
         command = DecRef)
 btnDec.place(
         width = 120, 
@@ -160,8 +157,7 @@ lblMsg.place(
 # Message Box
 txtMsg = Text(
         f1,
-        font = ('arial', 16, 'bold'),
-        bg = "powder blue")
+        font = ('arial', 16, 'bold'))
 txtMsg.place(
         width = 280,
         height = 190, 
@@ -171,8 +167,7 @@ txtMsg.place(
 # Result Box
 txtService = Text(
         f1,
-        font = ('arial', 16, 'bold'),
-        bg = "powder blue")
+        font = ('arial', 16, 'bold'))
 txtService.place(
         width = 280,
         height = 190, 
